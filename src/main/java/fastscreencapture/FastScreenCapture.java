@@ -330,8 +330,10 @@ public class FastScreenCapture {
         FastScreen screen = null;
         try {
             screen = new FastScreen();
-            int targetW = (w > 0) ? w : 1920;
-            int targetH = (h > 0) ? h : 1080;
+            int targetW = (w > 0) ? w : screen.getFrameWidth();
+            int targetH = (h > 0) ? h : screen.getFrameHeight();
+            if (targetW <= 0) targetW = 1920;
+            if (targetH <= 0) targetH = 1080;
 
             File outDir = new File("grabs");
             if (!outDir.exists()) outDir.mkdirs();
@@ -340,12 +342,24 @@ public class FastScreenCapture {
 
             for (int b = 0; b < burst; b++) {
                 long t0 = System.nanoTime();
-                int[] pixels = (w > 0 && h > 0) ? screen.captureRaw(x, y, w, h) : screen.captureRaw(0, 0, 0, 0);
+                int[] pixels = null;
+                // Retry loop for static screen (DXGI returns wait_timeout if no dirty rects yet)
+                for (int attempt = 0; attempt < 20; attempt++) {
+                    pixels = (w > 0 && h > 0) ? screen.captureRaw(x, y, w, h) : screen.captureRaw(0, 0, 0, 0);
+                    if (pixels != null) break;
+                    try { Thread.sleep(10); } catch (InterruptedException ignored) {}
+                }
                 long tCapture = System.nanoTime();
 
                 if (pixels == null) {
                     System.err.println("[ERROR] Failed to capture DXGI desktop surface.");
                     return;
+                }
+
+                // If target dimensions were fallback or 0, adapt to captured frame size
+                if (screen.getFrameWidth() > 0 && screen.getFrameHeight() > 0 && (w <= 0 || h <= 0)) {
+                    targetW = screen.getFrameWidth();
+                    targetH = screen.getFrameHeight();
                 }
 
                 if (withCursor) {
