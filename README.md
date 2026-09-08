@@ -14,6 +14,8 @@
 
 Instead of burning CPU on heavy compression or writing 30 GB of uncompressed bitmaps to the SSD, `FastScreenCapture` extracts pristine frames straight from DXGI Desktop Duplication and streams raw BGRA buffers directly into an optimized FFmpeg pipe — keeping CPU usage near 0% with zero dropped frames.
 
+Watch Demo (YouTube) | Watch JMH Benchmark (YouTube)
+
 <p align="center">
   <b>▶️ Watch the 60 FPS Demo Video on YouTube:</b> <a href="https://youtu.be/CBbNffXXvVc">https://youtu.be/CBbNffXXvVc</a>
 </p>
