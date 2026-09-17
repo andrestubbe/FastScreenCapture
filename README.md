@@ -84,7 +84,8 @@ Traditional capture tools are poorly suited for latency-critical tasks, high-fre
 | Feature | Windows Snipping Tool | ShareX | FastScreenCapture |
 |:---|:---|:---|:---|
 | **Capture Engine** | WinRT / GDI (CPU) | GDI / D3D hook (.NET) | DirectX 11 DXGI Desktop Duplication |
-| **Capture Latency** | 150–500 ms (UI freeze) | 30–80 ms | < 1 ms (Instant grab) |
+| **Frame Acquisition** | 150–500 ms (UI overlay lag) | 30–80 ms | < 0.8 ms (Direct DXGI) |
+| **Commit to Disk / Save** | 50–200 ms (PNG encode) | 30–100 ms (PNG encode) | < 6 ms (Bit-perfect BMP) / Direct RAM pipe |
 | **Encoding Overhead** | Forced PNG/JPEG compression | CPU-bound encoding lag | Bit-perfect uncompressed BMP / direct pipe |
 | **60 FPS Video Pipe** | ⚠️ Noticeable frame drops | ⚠️ Software encode load | ✅ Zero-copy RAM pipe to FFmpeg |
 | **Daemon Footprint** | System background service | Heavy .NET runtime (~150 MB) | Ultra-light native daemon (<15 MB) |
