@@ -30,7 +30,33 @@ Watch Demo (YouTube) | Watch JMH Benchmark (YouTube)
 
 ## Quick Start
 
-### 1. Background Daemon (Recommended)
+### 1. Java API Example
+
+```java
+import fastscreen.FastScreen;
+import fastscreencapture.FastBmpWriter;
+
+public class Demo {
+    public static void main(String[] args) throws Exception {
+        // 1. Initialize ultra-fast DirectX 11 DXGI Desktop Duplication capture
+        try (FastScreen screen = new FastScreen()) {
+            int width = 1920;
+            int height = 1080;
+
+            // 2. Capture raw 32-bit frame (<1 ms, zero GC pressure)
+            int[] pixels = screen.captureRaw(0, 0, width, height);
+
+            // 3. Write bit-perfect uncompressed BMP straight to disk (<6 ms)
+            if (pixels != null) {
+                FastBmpWriter.writeBmp("grabs/quickstart_grab.bmp", width, height, pixels);
+                System.out.println("Bit-perfect screen capture saved to grabs/quickstart_grab.bmp");
+            }
+        }
+    }
+}
+```
+
+### 2. Background Daemon (Recommended)
 ```cmd
 FastScreenCapture.bat --daemon
 ```
@@ -39,13 +65,13 @@ Runs quietly in the background without UI lag or focus interruption:
 - **`[F10]`**: **Instant Bit-Perfect Screenshot** (uncompressed 32-bit BMP straight to `grabs/`).
 - **Acoustic feedback**: High tone (1200 Hz) confirms recording start; low tone (450 Hz) confirms recording stop.
 
-### 2. Instant Desktop Grab via CLI Launcher
+### 3. Instant Desktop Grab via CLI Launcher
 ```cmd
 FastScreenCapture.bat
 ```
 Captures the entire desktop at hardware resolution and writes a bit-perfect uncompressed `.bmp` into `grabs/`.
 
-### 3. Programmatic Video & Screenshot API
+### 4. Programmatic Video & Screenshot API
 ```cmd
 FastScreenCapture.bat --record 60 --fps 60 --out fastanimation_demo.mp4
 ```
@@ -59,6 +85,9 @@ FastScreenCapture.bat --record 60 --fps 60 --out fastanimation_demo.mp4
 - [Real-World Use Cases](#real-world-use-cases)
 - [Architecture & Pipeline](#architecture--pipeline)
 - [Performance Benchmarks](#performance-benchmarks)
+- [API Quick Reference](#api-quick-reference)
+- [FFmpeg Requirement & Quick Setup](#ffmpeg-requirement--quick-setup)
+- [Technical Demos & Benchmarks](#technical-demos--benchmarks)
 - [Installation](#installation)
 - [Documentation](#documentation)
 - [Platform Support](#platform-support)
@@ -224,6 +253,17 @@ Alternatively, download the official Windows build directly from [gyan.dev/ffmpe
 
 ---
 
+## Technical Demos & Benchmarks
+
+Run standalone verification demos or execute JMH throughput microbenchmarks:
+
+| Type | Target / Launcher | Source File / Class | Description |
+|:---|:---|:---|:---|
+| **CLI & Hotkey Daemon** | [`FastScreenCapture.bat`](FastScreenCapture.bat) | [`FastScreenCapture.java`](src/main/java/fastscreencapture/FastScreenCapture.java) | Full desktop capture CLI & background hotkey daemon (`F9` Video, `F10` Screenshot) |
+| **Throughput Benchmark** | [`run-benchmark.bat`](run-benchmark.bat) | [`Benchmark.java`](examples/Benchmark/src/main/java/fastscreencapture/benchmark/Benchmark.java) | Formal OpenJDK JMH microbenchmark measuring uncompressed raw BMP serialization throughput |
+
+---
+
 ## Installation
 
 ### Option 1: Maven (`pom.xml`)
@@ -322,20 +362,21 @@ dependencies {
 
 ## Documentation
 
-* **[PHILOSOPHY.md](docs/PHILOSOPHY.md)**: The engineering rationale for uncompressed zero-latency captures.
-* **[REFERENCE.md](docs/REFERENCE.md)**: Complete CLI switches and Java API reference.
-* **[CHANGELOG.md](docs/CHANGELOG.md)**: Full release history and version notes.
-* **[ROADMAP.md](docs/ROADMAP.md)**: Upcoming features, 60+ FPS video streaming, and ecosystem milestones.
+- **[CHANGELOG.md](docs/CHANGELOG.md)**: Full release history and version notes.
+- **[COMPILE.md](docs/COMPILE.md)**: Build instructions, daemon compilation, and packaging.
+- **[REFERENCE.md](docs/REFERENCE.md)**: Complete CLI switches and Java API reference.
+- **[PHILOSOPHY.md](docs/PHILOSOPHY.md)**: The engineering rationale for uncompressed zero-latency captures.
+- **[ROADMAP.md](docs/ROADMAP.md)**: Upcoming features, 60+ FPS video streaming, and ecosystem milestones.
 
 ---
 
 ## Platform Support
 
-| Platform | Status |
-|---|---|
-| Windows 10/11 (x64) | ✅ Fully Supported (DirectX 11 DXGI + Win32 Hooks) |
-| Linux | 🚧 Planned |
-| macOS | 🚧 Planned |
+| Platform | Architecture | Status | Notes |
+|:---|:---|:---|:---|
+| **Windows 10 / 11** | `x86_64` | ✅ Fully Supported | DirectX 11 DXGI GPU capture & Win32 global hooks |
+| **Linux (X11 / Wayland)** | `x86_64` | 🔄 Planned | Native DMA-BUF / PipeWire screen capture bridge |
+| **macOS (Sonoma+)** | `Apple Silicon` | 🔄 Planned | ScreenCaptureKit zero-copy frame stream |
 
 ---
 

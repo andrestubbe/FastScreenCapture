@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>fastgrab.benchmark</groupId>
-    <artifactId>fastgrab-benchmark</artifactId>
-    <version>0.1.0</version>
+    <groupId>fastscreencapture.benchmark</groupId>
+    <artifactId>fastscreencapture-benchmark</artifactId>
+    <version>0.1.1</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -26,18 +26,8 @@
     <dependencies>
         <dependency>
             <groupId>com.github.andrestubbe</groupId>
-            <artifactId>FastGrab</artifactId>
-            <version>0.1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.andrestubbe</groupId>
-            <artifactId>FastScreen</artifactId>
-            <version>0.1.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.andrestubbe</groupId>
-            <artifactId>FastCore</artifactId>
-            <version>0.1.0</version>
+            <artifactId>FastScreenCapture</artifactId>
+            <version>0.1.1</version>
         </dependency>
         <dependency>
             <groupId>org.openjdk.jmh</groupId>
@@ -73,7 +63,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.5.1</version>
+                <version>3.5.0</version>
                 <executions>
                     <execution>
                         <phase>package</phase>

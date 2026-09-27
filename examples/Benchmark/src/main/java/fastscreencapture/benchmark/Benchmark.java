@@ -1,4 +1,4 @@
-package fastgrab.benchmark;
+package fastscreencapture.benchmark;
 
 import fastscreencapture.FastBmpWriter;
 import fastscreen.FastScreen;
@@ -40,7 +40,7 @@ public class Benchmark {
     }
 
     @org.openjdk.jmh.annotations.Benchmark
-    public void benchmarkFastGrabBmpWriter() throws Exception {
+    public void benchmarkFastScreenCaptureBmpWriter() throws Exception {
         FastBmpWriter.writeBmp(BENCH_FILE, 800, 600, testPixels);
     }
 }
