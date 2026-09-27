@@ -1,4 +1,4 @@
-# FastScreenCapture 0.1.1 [ALPHA] — Ultra-Fast Uncompressed Screen Capture CLI & Global Hotkey Daemon for Java
+# FastScreenCapture 0.1.1 [ALPHA-2026-09-06] — Ultra-Fast Uncompressed Screen Capture CLI & Global Hotkey Daemon for Java
 
 [![Status](https://img.shields.io/badge/status-0.1.1-brightgreen.svg)](https://github.com/andrestubbe/FastScreenCapture/releases/tag/0.1.1)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
